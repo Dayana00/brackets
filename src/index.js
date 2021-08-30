@@ -1,39 +1,32 @@
     module.exports = function check(str, bracketsConfig) {
-    for (let index = 0; index < bracketsConfig.length; index++) {
-        if(!checPairNumbers(str,bracketsConfig[index][0],bracketsConfig[index][1])){
-            return false;
-        }
-            return checkOpeningClosingBrackets(str,bracketsConfig[index][0],bracketsConfig[index][1])
+        for (let i = 0; i < bracketsConfig.length; i++) {
+            return checkBrackets (str, bracketsConfig[i][0], bracketsConfig[i][1])
         }
     }
 
-function checkOpeningClosingBrackets(str, firstBracket,secondBracket){
-    let indexFirstBracket=-1;
-    let indexSecondBracket=-1;
-
-    while(true){
-        indexFirstBracket=str.indexOf(firstBracket,indexFirstBracket+1)   ;
-
-        if(firstBracket===secondBracket){
-            secondBracket=firstBracket+1;
+    function checkBrackets (str, firstBracket, secondBracket) {
+        let count = 0;
+        
+        for (let i=0; i < str.length; i++) {
+            
+            if ( str[i] == firstBracket) {
+                count++
+            } else if ( str[i] == secondBracket) {
+                count--
+            } else if (str.indexOf(firstBracket) == -1) {
+                return false
+            }
+            if (count < 0) {
+                break
+            }
         }
-        indexSecondBracket=str.indexOf(secondBracket,indexSecondBracket+1);
-
-        if(indexFirstBracket===-1||indexSecondBracket===-1){
+    
+        if (firstBracket == secondBracket && count % 2 == 0 ) {
+            return true
+        } else if (count != 0) {
+            return false
+        } else {
             return true
         }
-
-        if(indexFirstBracket>indexSecondBracket){
-            return false;
-        }else if((indexFirstBracket-indexSecondBracket)%2===0){
-            return false;
-        }
+    
     }
-}
-
-function checPairNumbers(str,firstBracket,secondBracket){
-    let numberFirstBrackets=str.split(firstBracket).length-1;
-    let numberSecondBrackets=str.split(secondBracket).length-1;
-
-    return numberFirstBrackets===numberSecondBrackets
-}
